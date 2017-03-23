@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>基于css3动画实现的中奖消息轮播</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="cleartype" content="on">
+    <script>
+    ! function(n, e) {
+        var t = n.documentElement,
+            i = "orientationchange" in window ? "orientationchange" : "resize",
+            d = function() {
+                var n = t.clientWidth;
+                n && (t.style.fontSize = 100 * (n / 375) + "px")
+            };
+        if (n.addEventListener) {
+            e.addEventListener(i, d, !1);
+            n.addEventListener("DOMContentLoaded", d, !1);
+            d()
+        }
+    }(document, window);
+    </script>
+    <style>
+    blockquote,
+    body,
+    dd,
+    div,
+    dl,
+    dt,
+    fieldset,
+    form,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    input,
+    li,
+    ol,
+    p,
+    pre,
+    td,
+    textarea,
+    th,
+    ul {
+        padding: 0;
+        margin: 0;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    }
+
+    
+    body {
+        font-family: "Microsoft YaHei", arial, simsun, SimHei;
+        color: #aaa;
+        font-size: .12rem;
+    }
+    
+    .notice-list {
+        padding: 0 .15rem;
+        line-height: .2rem;
+        text-align: left;
+        overflow: hidden;
+    }
+    
+    li {
+        list-style: none;
+        height: .2rem;
+    }
+    
+    .notice-list a {
+        color: #333;
+        text-decoration: none;
+    }
+    
+    .notice-wrap {
+        height: .2rem;
+        text-align: center;
+        overflow: hidden;
+        padding: .025rem 0;
+    }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div style="padding: .2rem 0;">
+            <div class="notice-wrap">
+                <ul class="notice-list demo-list1">
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 360U74** 赢得了iPad mini 4
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 fgdf74 赢得了iPhone 7 plus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 发光时代 赢得了方面黄金时代
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 dsdff 赢得了方面fggfdf代
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 360U74** 赢得了iPad mini 4
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="padding: .2rem 0;">
+            <div class="notice-wrap">
+                <ul class="notice-list " id="demoList2">
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 360U74** 赢得了iPad mini 4
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 fgdf74 赢得了iPhone 7 plus
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 哈哈哈df74 赢得了 开关机俯瞰风景
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 很过分的 赢得了 巨化股份的景
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 发光时代 赢得了方面黄金时代
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 dsdff 赢得了方面fggfdf代
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">
+                            恭喜 360U74** 赢得了iPad mini 4
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+    /**
+                function generateStyle   生成动画所需的样式
+                @params
+                    selector  作用的dom的选择器
+                    length    数据的长度
+                    gapTime   轮播间隔时间，单位s
+                    time      切换时间，单位s
+            */
+
+    function generateStyle(selector, length, gapTime, time) {
+        if (length < 2) return;
+        var gapTime = gapTime || 3;
+        var time = time || 0.1;
+        //css3动画总时长
+        var durationTime = length * (gapTime + time);
+        var curGap = time / (gapTime + time) * 100;
+        var eachTime = 100 / length;
+        var animationName = 'name_' + length + '_' + gapTime + '_' + time;
+        //animation-name不能带小数点
+        animationName = animationName.replace('.', '');
+        var style = 'keyframes ' + animationName + ' {' + genTransform(0, 0, '-webkit-');
+        var step;
+        for (var i = 1; i <= length; i++) {
+            step = eachTime * i;
+            style = style + genTransform(step - curGap, -(i - 1) * 0.2, '-webkit-') + genTransform(step, -i * 0.2, '-webkit-')
+        }
+        style += '}'
+        style = '@-webkit-' + style + '@' + style;
+        //将animation动画绑定到选择器上
+        style += selector + ' {-webkit-animation: ' + animationName + ' ' + durationTime + 's linear 0s infinite;' +
+            'animation: ' + animationName + ' ' + durationTime + 's linear 0s infinite;}';
+        return style;
+    }
+
+    function genTransform(percent, translateY, prefix) {
+        var transformStyle = percent + '% {' + prefix + 'transform:translate(0,' + translateY + 'rem);' +
+            'transform:translate(0,' + translateY + 'rem);}'
+        return transformStyle;
+    }
+
+
+    function init(selector, length, gapTime, time) {
+        var nod = document.createElement('style'),
+            str = generateStyle(selector, length, gapTime, time);
+        nod.type = 'text/css';
+        nod.innerHTML = str;
+        document.getElementsByTagName('head')[0].appendChild(nod);
+    }
+
+    init('.demo-list1', 4, 3, 0.1)
+    init('#demoList2', 6, 2, 0.1)
+    </script>
+</body>
+
+</html>
