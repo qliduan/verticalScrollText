@@ -1,2 +1,2 @@
-# verticalScrollText
+# 中奖消息轮播
 基于css3实现的垂直方向滚动的中奖消息通知
