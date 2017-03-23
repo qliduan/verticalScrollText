@@ -20,6 +20,7 @@
         animationName = animationName.replace('.', '');
         var style = 'keyframes ' + animationName + ' {' + genTransform(0, 0, '-webkit-');
         var step;
+        //计算处理每一次滚动的位置和所占的时间比例
         for (var i = 1; i <= length; i++) {
             step = eachTime * i;
             style = style + genTransform(step - curGap, -(i - 1) * 0.2, '-webkit-') + genTransform(step, -i * 0.2, '-webkit-')
